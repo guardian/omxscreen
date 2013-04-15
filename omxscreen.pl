@@ -7,23 +7,23 @@ our $omxplayer='/usr/bin/omxplayer';
 our $omxargs='-o hdmi';
 our $logfile="/home/pi/omxscreen.log";
 
-out @targetPaths=('/media','/home/pi');
+our @targetPaths=('/media','/home/pi');
 
 sub iterateDirectory {
 my $dir=shift;
 
 my $n=0;
-open $pipe,"find \"$dir\" -iname \*.mov -or -iname \*.mp4 -or -iname \*.mkv -or -iname \*.webm | grep -v \.Trashes/ | grep -v /\._ |" or die "Unable to set up search function.\n";
+open PIPE,"find \"$dir\" -iname \*.mov -or -iname \*.mp4 -or -iname \*.mkv -or -iname \*.webm | grep -v \.Trashes/ | grep -v /\._ |" or die "Unable to set up search function.\n";
 
-while(<$pipe>){
+while(<PIPE>){
 	++$n;
 	chomp;
-	my $cmd="\"$omxplayer\" $omxargs > $logfile 2>&1";
+	my $cmd="\"$omxplayer\" $omxargs \"$_\">> $logfile 2>&1";
 	print "$cmd\n";
 	system("echo Going to run $cmd >> $logfile");
 	system($cmd);
 }
-close $pipe;
+close PIPE;
 return $n;
 }
 

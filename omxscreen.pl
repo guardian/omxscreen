@@ -7,7 +7,9 @@ our $omxplayer='/usr/bin/omxplayer';
 our $omxargs='-o hdmi';
 our $logfile="/home/pi/omxscreen.log";
 
-our @targetPaths=('/media','/home/pi');
+our @targetPaths=('/media');
+#our @targetPaths=('/media','/home/pi');
+#our @targetPaths=('/media/sda1/testvid','/home/pi');
 
 sub iterateDirectory {
 my $dir=shift;
@@ -19,8 +21,9 @@ while(<PIPE>){
 	++$n;
 	chomp;
 	my $cmd="\"$omxplayer\" $omxargs \"$_\">> $logfile 2>&1";
-	print "$cmd\n";
-	system("echo Going to run $cmd >> $logfile");
+	#print "$cmd\n";
+	system('/usr/bin/clear');
+	system("/bin/echo Going to run $cmd >> $logfile");
 	system($cmd);
 }
 close PIPE;
@@ -29,11 +32,19 @@ return $n;
 
 #START MAIN
 
+#print "@targetPaths\n";
+#sleep(5);
+
 while(1){
 	my $nFiles=0;
-	foreach(@targetPaths){
+	my @pathList=@targetPaths;
+	foreach(@pathList){
+		#print "@targetPaths\n";
+		#sleep(5);
 		$nFiles+=iterateDirectory($_);
 	}
+	#print "@targetPaths\n";
+	#sleep(5);
 	if($nFiles==0){
 		system("clear");
 		print "Unable to find any MOV or MP4 files in @targetPaths.\n";

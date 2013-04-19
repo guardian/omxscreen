@@ -1,0 +1,49 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:		omxscreen
+# Required-Start:	$all
+# Required-Stop:	$all
+# Default-Start:	3 4 5
+# Default-Stop:		0 1 2 6
+# Short-Description:	starts the screen display loop
+# Description:		start or stop the process to play videos from a usb stick
+### END INIT INFO
+
+if [ ! -x /usr/bin/perl ]; then
+	echo "Unable to find a usable system perl.  Try sudo apt-get install perl."
+	exit 1
+fi
+
+if [ ! -x /usr/bin/omxplayer ]; then
+	echo "Unable to find omxplayer. Try sudo apt-get install omxplayer."
+	exit 1
+fi
+
+if [ ! -x /usr/local/bin/omxscreen.pl ]; then
+	echo "Unable to find the omxscreen script. Try re-installing."
+	exit 1
+fi
+
+case "$1" in
+start)
+	echo -n "Starting omxscreen..."
+	/usr/bin/perl -e /usr/local/bin/omxscreen.pl >/dev/null 2>&1 &
+	echo $! > /var/run/omxscreen.pid
+	echo "done."
+	;;
+stop)
+	echo -n "Stopping omxscreen..."
+	if [ -f /var/run/omxscreen.pid ]; then
+		kill `cat /var/run/omscreen.pid`
+		rm /var/run/omxscreen.pid
+	else
+		echo "Unable to find /var/run/omxscreen.pid"
+	fi
+	;;
+restart|force-reload)
+	echo "Restart of omxscreen not necessary."
+	;;
+esac
+
+exit 0

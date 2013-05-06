@@ -1,0 +1,5 @@
+54c54,55
+< 1:2345:respawn:/sbin/getty --noclear 38400 tty1 
+---
+> #1:2345:respawn:/sbin/getty --noclear 38400 tty1 
+> 1:3:respawn:/sbin/rungetty -u omxscreen tty1 /usr/bin/perl /usr/local/bin/omxscreen.pl

@@ -5,7 +5,7 @@ my $version='omxscreen master control script $Rev$ $LastChangedDate$';
 our $omxplayer='/usr/bin/omxplayer';
 #COMMENT THIS OUT TO USE REGULAR MINI-JACK ON PI
 our $omxargs='-o hdmi';
-our $logfile="/home/pi/omxscreen.log";
+our $logfile="/home/omxscreen/omxscreen.log";
 
 our @targetPaths=('/media');
 #our @targetPaths=('/media','/home/pi');

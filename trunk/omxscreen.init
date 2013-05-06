@@ -1,4 +1,5 @@
 #!/bin/bash
+#THIS SCRIPT IS NOT NEEDED OR USED ANY MORE.
 
 ### BEGIN INIT INFO
 # Provides:		omxscreen
@@ -27,10 +28,11 @@ fi
 
 case "$1" in
 start)
-	echo -n "Starting omxscreen..."
-	/usr/bin/perl -e /usr/local/bin/omxscreen.pl >/dev/null 2>&1 &
+	/usr/bin/clear
+	#echo -n "Starting omxscreen..."
+	/usr/bin/perl /usr/local/bin/omxscreen.pl >/dev/null 2>&1 &
 	echo $! > /var/run/omxscreen.pid
-	echo "done."
+	#echo "done."
 	;;
 stop)
 	echo -n "Stopping omxscreen..."

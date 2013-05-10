@@ -1,0 +1,7 @@
+# automounting usb flash drives
+# umask is used to allow every user to write on the stick
+# we use --sync in order to enable physical removing of mounted memory sticks -- this is OK for fat-based sticks
+ACTION=="add",KERNEL=="sd*", RUN+="/usr/bin/pmount --sync --umask 000 %k"
+ACTION=="remove", KERNEL=="sd*", RUN+="/usr/bin/pumount %k"
+#ACTION=="add",KERNEL=="sdc*", RUN+="/usr/bin/pmount --sync --umask 000 %k"
+#ACTION=="remove", KERNEL=="sdc*", RUN+="/usr/bin/pumount %k

@@ -3,10 +3,29 @@
 use JSON;
 use LWP::Simple;
 use Data::Dumper;
+use File::Slurp;
 
-my $queryurl='http://content.guardianapis.com/search?tag=music%2Fmusic%2Ctype%2Fvideo%2Ctone%2Fperformances&format=json&show-tags=all&show-media=all&api-key=techdev-internal';
+my $keydata;
+foreach(('/usr/local/share/guardian','/usr/share/guardian','/usr/local/share','/Library/Preferences/Guardian','/Library/Preferences','.')){
+	print "Looking for key data in $_...\n";
+	eval {
+	$keydata=read_file("$_/api.key");
+	};
+	if($keydata){
+		print "Found it\n";
+		last;
+	}
+}
+chomp $keydata;
 
-our @target_encodings=('video/mp4:720','video/3gp:large');
+unless($keydata){
+	print "Unable to find an api key for the open platform.\n";
+	exit 1;
+}
+
+my $queryurl='http://content.guardianapis.com/search?tag=music%2Fmusic%2Ctype%2Fvideo%2Ctone%2Fperformances&format=json&show-tags=all&show-elements=all';
+
+our @target_encodings=('video/mp4:720','video/3gpp:large','video/mp4','mp4');
 our $playerargs='-o hdmi';
 
 sub find_best_encoding {
@@ -24,11 +43,13 @@ return undef;
 sub find_encoding {
 my($targetencoding,$record)=@_;
 
-foreach(@{$record->{'mediaAssets'}}){
+foreach(@{$record->{'elements'}->[0]->{'assets'}}){
+	print Dumper($_);
 	if($_->{'type'} eq 'video'){
-		foreach(@{$_->{'encodings'}}){
-			return $_->{'file'} if($_->{'format'} eq $targetencoding);
-		}	
+#		foreach(@{$_->{'encodings'}}){
+#			return $_->{'file'} if($_->{'mimeType'} eq $targetencoding);
+#		}	
+	return $_->{'file'} if($_->{'mimeType'} eq $targetencoding);
 	}
 }
 return undef;
@@ -36,8 +57,9 @@ return undef;
 
 #START MAIN
 my $pagesize=10;
-for(my $page=1;$page<100;++$page){
-	my $jsoncontent=get($queryurl."&page=$page&page-size=$pagesize");
+for(my $page=1;$page<20;++$page){
+	print $queryurl."&api-key=$keydata&page=$page&page-size-$pagesize";
+	my $jsoncontent=get($queryurl."&api-key=$keydata&page=$page&page-size-$pagesize");
 	unless($jsoncontent){
 		print "Unable to retrieve from the content api at $queryurl.\n";
 		exit 1;
@@ -51,7 +73,7 @@ for(my $page=1;$page<100;++$page){
 		my $url=find_best_encoding($_);
 		print $url;
 		print $_->{'webTitle'}."\n----------------------------\n";
-#		print Dumper($_);
+		#print Dumper($_);
 		unless($url){
 			print "An applicable URL was not found.\n";
 			next;

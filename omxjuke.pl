@@ -25,7 +25,9 @@ unless($keydata){
 
 my $queryurl='http://content.guardianapis.com/search?tag=music%2Fmusic%2Ctype%2Fvideo%2Ctone%2Fperformances&format=json&show-tags=all&show-elements=all';
 
-our @target_encodings=('video/mp4:720','video/3gpp:large','video/mp4','mp4');
+#our @target_encodings=('video/mp4:720','video/3gpp:large','video/mp4','mp4');
+our @target_encodings=('video/mp4:720','video/mp4','mp4');
+
 our $playerargs='-o hdmi';
 
 sub find_best_encoding {
@@ -81,7 +83,7 @@ for(my $page=1;$page<20;++$page){
 		system("/usr/bin/omxplayer $playerargs \"$url\"");
 		$rc=$?;
 		print "omxplayer returned $rc\n";
-		last if($rc>0);
+		last if($rc>0 && $rc!=256);
 	}
 	last if($rc>0);
 }

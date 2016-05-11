@@ -1,0 +1,11 @@
+[Unit]
+Description=OMXScreen digital signage player
+After=rc-local.service
+
+[Service]
+ExecStart=/usr/local/bin/omxscreen.pl
+Type=simple
+PIDFile=/var/run/omxscreen.pid
+
+
+

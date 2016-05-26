@@ -18,6 +18,8 @@ How to use
     - apply the inittab.diff path to /etc/inittab (for older Raspbian).  This will cause the first console to always be a running version of the player script, and assumes that it is installed to /usr/local/bin
     - if there is no /etc/inittab file, then you should copy the omxscreen.service file to /etc/systemd/system.  Then run sudo systemctl daemon-reload, followed by sudo systemctl enable omxscreen.  This will make the system start at boot.
 
+A built SD card image, with Raspbian 4.4 (2016-05-10) can be downloaded here: https://cdn.theguardian.tv/software/omxscreen_ras2016.dmg
+
 How to encode the media
 -----
 

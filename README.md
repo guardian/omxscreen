@@ -10,11 +10,13 @@ How to use
 
 1. Get hold of a raspberry pi - RS Online or Farnell stock them, as do Maplin and other retailers
 2. Download an up-to-date version of Raspbian and initialise an SD card with it
-3. Use apt-get on the pi to install omxplayer and perl
+3. Use apt-get on the pi to install pmount, omxplayer and perl
 4. Create a user called omxscreen, or change line 8 of omxscreen.pl
 5. Install the omxscreen.pl script to /usr/bin or /usr/local/bin.  You can run the system right away by plugging in a USB stick and running this script; anything under the /media directory (usual mount point) will be played
-6. If you want USB sticks to automount when you plug them into the Pi's USB socket, copy the automount.rules file to /etc/udev.d.  You'll probably want to reboot once you've this.
-7. If you want the system to start up automatically at boot, apply the inittab.diff path to /etc/inittab.  This will cause the first console to always be a running version of the player script, and assumes that it is installed to /usr/local/bin
+6. If you want USB sticks to automount when you plug them into the Pi's USB socket, copy the automount.rules file to /etc/udev.d (or /etc/udev/rules.d on Raspbian 2016+).  You'll probably want to reboot once you've this.
+7. If you want the system to start up automatically at boot, either: 
+    - apply the inittab.diff path to /etc/inittab (for older Raspbian).  This will cause the first console to always be a running version of the player script, and assumes that it is installed to /usr/local/bin
+    - if there is no /etc/inittab file, then you should copy the omxscreen.service file to /etc/systemd/system.  Then run sudo systemctl daemon-reload, followed by sudo systemctl enable omxscreen.  This will make the system start at boot.
 
 How to encode the media
 -----

@@ -34,6 +34,7 @@ return $n;
 
 #print "@targetPaths\n";
 #sleep(5);
+system("/usr/bin/clear");
 
 while(1){
 	my $nFiles=0;
